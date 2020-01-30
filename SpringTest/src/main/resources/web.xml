@@ -1,0 +1,67 @@
+
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- 监听器,作用是启用Web容器时,自动装配applicationContext的配置信息。在web.xml中配置监听器，启动容器时，会默认执行他实现的方法 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- 整个项目的全局变量，相当于设置一个固定值，param-name是键，相当于就是参数名，param-value是值，相当于参数值 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring-mybatis.xml</param-value>
+    </context-param>
+    
+    <!-- 配置DispatcherServlet -->
+    <servlet>
+        <!-- DispatcherServlet类是前置控制器,主要用于拦截匹配的请求,拦截匹配规则要自定义.
+        把拦截下来的请求,依据相应的规则分发到目标Controller来处理,是配置Spring MVC的第一步 -->
+        <servlet-name>DispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+
+        <!-- 配置SpringMVC需要加载的配置文件。init-params是整个项目的局部变量。容器启动时会加重配置文件spring-mvc.xml -->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-mvc.xml</param-value>
+        </init-param>
+
+        <!-- 表示启动容器时初始化该Servlet。
+        当值为0或者大于0时，表示容器应用启动时加载并初始化这个Servelet。
+        如果值小于0或者未指定时，则指示容器在该Servlet被选择时才加载。
+        正值越小，Servlet的优先级越高，应用启动时就有限加载。值相同时，容器就会自动选择顺序来加载。 -->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <!-- 标签声明了与该Servlet相应的匹配规则，每个<url-pattern>标签代表1个匹配规则 -->
+    <servlet-mapping>
+        <servlet-name>DispatcherServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.jsp</location>
+    </error-page>
+</web-app>
+
